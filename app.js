@@ -27,3 +27,14 @@ function leerDatosCurso(curso){
         cantidad: 1,
     }
 }
+
+function CaritoHTML() {
+    articulosCarrito.Carrito.array.forEach(curso => {
+        const row =document.createElement('tr');
+        row.innerHTML =`
+        <td>${curso.titulo}</td>
+        `;
+        contenedorCarrito.appendChild(row);
+    })
+}
+
