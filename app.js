@@ -78,3 +78,8 @@ function CaritoHTML() {
     });
 }
 
+function vaciarCarrito() {
+      while(contenedorCarrito.firstChild) {
+         contenedorCarrito.removeChild(contenedorCarrito.firstChild);
+     }
+}
