@@ -13,12 +13,13 @@ function cargarEventListeners() {
 function agregarCurso(e) {
     e.preventDefault()
     if(e.target.classList.contain('agregar-carrito')){
-        const curso = a.target.parentElement.parentElement;
+        const curso = e.target.parentElement.parentElement;
+        console.log(curso)
         leerDatosCurso(curso);
     }
 }
 
-function leerDatosCurso(curso){
+function leerDatosCurso(curso) {
     const infoCurso = {
         imagen: curso.querySelector('img').scr,
         titulo: curso.querySelector('h4').textContent,
@@ -26,15 +27,54 @@ function leerDatosCurso(curso){
         id: curso.querySelector('a').getAttribute('data-id'),
         cantidad: 1,
     }
+
+    if( articulosCarrito.some( curso => curso.id === infoCurso.id ) ) { 
+        const cursos = articulosCarrito.map( curso => {
+             if( curso.id === infoCurso.id ) {
+                  curso.cantidad++;
+                   return curso;
+              } else {
+                   return curso;
+           }
+        })
+        articulosCarrito = [...cursos];
+   }  else {
+        articulosCarrito = [...articulosCarrito, infoCurso];
+   }
+
+   console.log(articulosCarrito)
+
+     carritoHTML();
+}
+
+function eliminarCurso(e) {
+    e.preventDefault();
+    if(e.target.classList.contains('borrar-curso') ) {
+         const cursoId = e.target.getAttribute('data-id')
+        
+         articulosCarrito = articulosCarrito.filter(curso => curso.id !== cursoId);
+
+         carritoHTML();
+    }
 }
 
 function CaritoHTML() {
-    articulosCarrito.Carrito.array.forEach(curso => {
-        const row =document.createElement('tr');
-        row.innerHTML =`
-        <td>${curso.titulo}</td>
-        `;
-        contenedorCarrito.appendChild(row);
-    })
+    vaciarCarrito();
+
+    articulosCarrito.forEach(curso => {
+         const row = document.createElement('tr');
+         row.innerHTML = `
+              <td>  
+                   <img src="${curso.imagen}" width=100>
+              </td>
+              <td>${curso.titulo}</td>
+              <td>${curso.precio}</td>
+              <td>${curso.cantidad} </td>
+              <td>
+                   <a href="#" class="borrar-curso" data-id="${curso.id}">X</a>
+              </td>
+         `;
+         contenedorCarrito.appendChild(row);
+    });
 }
 
